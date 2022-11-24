@@ -1,0 +1,69 @@
+<!--
+  ***********************************
+  Directory.Build.props
+
+  Added at the beginning of the build process
+
+  MSBuild root configurations
+  ***********************************
+-->
+<Project>
+  <!-- Include projects' root name -->
+  <Import Project="$(MSBuildThisFileDirectory)config\msbuild\ProjectRootName.props" />
+
+  <!-- Include Assembly Version and Product Info -->
+  <Import Project="$(MSBuildThisFileDirectory)config\msbuild\VersionInfo.props" />
+
+  <!-- Include preprocessor definitions for the product version targeting C/C++ -->
+  <Import Project="$(MSBuildThisFileDirectory)config\msbuild\VersionInfoPreprocessorDefinitions.props" />
+
+  <!-- Set default configurations -->
+  <PropertyGroup Condition=" '$(Configuration)' == '' ">
+    <!-- Assume 'Release' if no configuration is specified  -->
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineDebug>true</DefineDebug>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CustomIntermediateFolderName>__intermediates__\</CustomIntermediateFolderName>
+    <CustomOutputFolderName>__output__\</CustomOutputFolderName>
+    <CustomPublishFolderName>dist\</CustomPublishFolderName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Output path schema -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <!-- Build paths -->
+  <PropertyGroup>
+    <!-- IntDir is the property for the C/C++ projects -->
+    <IntDir>$(MSBuildThisFileDirectory)$(CustomIntermediateFolderName)$(MSBuildProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
+    <!-- anything not in 'src' is considered helper #NOTE: not best practice! to have code outside 'src' imho -->
+    <!-- OutDir is the property for the C/C++ projects -->
+    <OutDir>$(MSBuildThisFileDirectory)$(CustomOutputFolderName)$(Configuration)\Helpers\$(MSBuildProjectName)\$(Platform)\</OutDir>
+    <OutputPath>$(OutDir)</OutputPath>
+  </PropertyGroup>
+
+  <!-- Consolidate all main executables in one output -->
+  <PropertyGroup Condition="$(MSBuildProjectDirectory.Contains('src'))">
+    <!-- OutDir is the property for the C/C++ projects -->
+    <OutDir>$(MSBuildThisFileDirectory)$(CustomOutputFolderName)$(Configuration)\$(ProjectRootName)\$(Platform)\</OutDir>
+    <OutputPath>$(OutDir)</OutputPath>
+  </PropertyGroup>
+
+  <!-- Publish path, set IsPublishable to false to exclude project from being published -->
+  <PropertyGroup>
+    <PublishDir>$(MSBuildThisFileDirectory)$(CustomPublishFolderName)$(Version)\$(Configuration)\$(ProjectRootName)\$(Platform)\</PublishDir>
+  </PropertyGroup>
+
+  <!-- For code file names and pdb -->
+  <PropertyGroup>
+    <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+  </PropertyGroup>
+</Project>

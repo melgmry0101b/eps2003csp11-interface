@@ -1,0 +1,20 @@
+<!--
+  ***********************************
+  VersionInfoPreprocessorDefinitions.props
+
+  Defining preprocessors to be used in
+    C/C++ projects for versioning
+
+  MSBuild configurations
+  ***********************************
+-->
+<Project>
+  <PropertyGroup>
+    <BinaryFileVersion>$(FileVersion.Replace('.', ','))</BinaryFileVersion>
+    <BinaryProductVersion>$(VersionMajor),$(VersionMinor),$(VersionPatch),0</BinaryProductVersion>
+
+    <ProductPreprocessorDefinitions>_APP_VER_CONFIGURATION="$(Configuration)";_APP_VER_PRODUCT="$(Product)";_APP_VER_COMPANY="$(Company)";_APP_VER_COPYRIGHT="$(Copyright)"</ProductPreprocessorDefinitions>
+    <VersionPreprocessorDefinitions>_APP_VER_VERSION="$(Version)";_APP_VER_INFORMATIONAL_VERSION="$(InformationalVersion).$(SourceRevisionId)";_APP_VER_FILE_VERSION="$(FileVersion)";_APP_VER_ASSEMBLY_VERSION="$(AssemblyVersion)"</VersionPreprocessorDefinitions>
+    <BinaryVersionPreprocessorDefinitions>_APP_VER_BINARY_FILE_VERSION=$(BinaryFileVersion);_APP_VER_BINARY_PRODUCT_VERSION=$(BinaryProductVersion)</BinaryVersionPreprocessorDefinitions>
+  </PropertyGroup>
+</Project>

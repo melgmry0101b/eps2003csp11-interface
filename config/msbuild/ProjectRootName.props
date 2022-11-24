@@ -1,0 +1,14 @@
+<!--
+  ***********************************
+  ProjectRootName.props
+
+  Defines the root name used for solution's projects
+
+  MSBuild configurations
+  ***********************************
+-->
+<Project>
+  <PropertyGroup>
+    <ProjectRootName>eps2003csp11if</ProjectRootName>
+  </PropertyGroup>
+</Project>

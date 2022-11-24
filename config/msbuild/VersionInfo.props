@@ -1,0 +1,56 @@
+<!--
+  ***********************************
+  VersionInfo.props
+
+  Defines the version information for the project
+
+  MSBuild configurations
+  ***********************************
+-->
+<Project>
+  <!--
+    Reference: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#properties-per-attribute
+  -->
+
+  <!-- Product and Publisher Information -->
+  <PropertyGroup>
+    <!--
+      NOTE:
+          These properties changes managed projects that depends on AssemblyInfo
+        for versioning, but not natives that depends on VERSIONINFO resource,
+        they should be updated manually for now!
+    -->
+    <Product>eps2003csp11 interface</Product>
+    <Company>Mohammed Elghamry</Company>
+    <Copyright>(C) Mohammed Elghamry</Copyright>
+  </PropertyGroup>
+
+  <!-- Version Information -->
+  <PropertyGroup>
+    <!-- ====== Only Change after this line ====== -->
+    <VersionMajor>0</VersionMajor>
+    <VersionMinor>1</VersionMinor>
+    <VersionPatch>0</VersionPatch>
+    <!-- Always add '-' (dash) before VersionPrerelease for semantic versioning -->
+    <VersionPrerelease>-alpha.dev</VersionPrerelease>
+    <!-- ====== Only change before this line ====== -->
+
+    <VersionDate>$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</VersionDate>
+    <FileVersionDayOfYear>$([System.DateTime]::UtcNow.DayOfYear)</FileVersionDayOfYear>
+    <FileVersionYear>$([System.DateTime]::UtcNow.ToString("yy"))</FileVersionYear>
+    <FileVersionMinuteOfDay>$([System.Convert]::ToInt32($([System.DateTime]::UtcNow.TimeOfDay.TotalMinutes)))</FileVersionMinuteOfDay>
+
+    <Version>$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionPrerelease)</Version>
+    <InformationalVersion>$(Version)+$(Configuration).$(VersionDate)</InformationalVersion>
+    <SourceRevisionId>ManualBuild</SourceRevisionId>
+
+    <!-- File version is an identifier that is used to be showed in the FileExplorer,
+    it is more of a decorative thing rather functional -->
+    <FileVersion>$(VersionMajor).$(VersionMinor).$(FileVersionDayOfYear)$(FileVersionYear).$(FileVersionMinuteOfDay)</FileVersion>
+
+    <!-- Assembly version is used in .net runtime to strong bind the assemblies,
+    Changing it requires recompiling the entire project to target the new assembly
+    Only Changes on introducing new features, not with patches, builds, or revisions -->
+    <AssemblyVersion>$(VersionMajor).0.0.0</AssemblyVersion>
+  </PropertyGroup>
+</Project>
