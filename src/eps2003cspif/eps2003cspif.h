@@ -35,6 +35,8 @@
 #endif // __cpluscplus
 #endif // EPS2003CSPIF_EXPORTS
 
+#define DLLENTRY(return_type) DllExport return_type APIENTRY
+
 // ==============================
 // ====== Exported Methods ======
 // ==============================

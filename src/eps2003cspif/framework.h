@@ -26,5 +26,11 @@
 
 #include <windows.h>
 
+// =====================
+// ====== PKCS#11 ======
+// =====================
+
+#include <pkcs11/v2.20/cryptoki.h>
+
 #endif //EPS2003CSPIF_FRAMEWORK_H
 
