@@ -21,7 +21,8 @@
 // ====== Error Codes ======
 // =========================
 
-#define _EPSIF_ECODE_INIT_FAILED (_EPSIF_BASE_ERROR_CODE + 0x001)
+#define _EPSIF_ECODE_INIT_FAILED        (_EPSIF_BASE_ERROR_CODE + 0x000)
+#define _EPSIF_ECODE_FINALIZE_FAILED    (_EPSIF_BASE_ERROR_CODE + 0x001)
 
 // =====================
 // ====== HRESULT ======
@@ -30,6 +31,11 @@
 //
 // Initialization failed
 //
-#define EPSIF_E_INIT_FAILED MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, _EPSIF_ECODE_INIT_FAILED)
+#define EPSIF_E_INIT_FAILED         MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, _EPSIF_ECODE_INIT_FAILED)
+
+//
+// Finalization failed
+//
+#define EPSIF_E_FINALIZE_FAILED     MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, _EPSIF_ECODE_FINALIZE_FAILED)
 
 #endif

@@ -40,7 +40,7 @@ DLLENTRY(HRESULT) Initialize()
     result = C_Initialize(nullptr);
     if (result != CKR_OK && result != CKR_CRYPTOKI_ALREADY_INITIALIZED)
     {
-        _RPT1(_CRT_WARN, "Error occurred during initialization, code 0x%x", result);
+        _RPT1(_CRT_WARN, "Error occurred during initialization. Code 0x%x", result);
         return EPSIF_E_INIT_FAILED;
     }
 
@@ -48,3 +48,31 @@ DLLENTRY(HRESULT) Initialize()
 
     return S_OK;
 }
+
+// ------------------------------------------------------
+//
+// Close the library.
+// 
+// ------------------------------------------------------
+DLLENTRY(HRESULT) Finalize()
+{
+    if (!g_IsInitialized) { return S_OK; }
+
+    CK_RV result{ CKR_OK };
+
+    // Send finalization command to the library
+    result = C_Finalize(nullptr);
+    if (result != CKR_OK && result != CKR_CRYPTOKI_NOT_INITIALIZED)
+    {
+        _RPT1(_CRT_WARN, "Error occurred during finalization. Code 0x%x", result);
+        return EPSIF_E_FINALIZE_FAILED;
+    }
+
+    g_IsInitialized = false;
+
+    return S_OK;
+}
+
+// =============================
+// ====== Private Methods ======
+// =============================
