@@ -14,6 +14,8 @@
 #ifndef EPS2003CSPIF_H
 #define EPS2003CSPIF_H
 
+#include "errcodes.h"
+
 // ====================
 // ====== Macros ======
 // ====================

@@ -30,6 +30,9 @@
     <ClInclude Include="eps2003cspif.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="errcodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
