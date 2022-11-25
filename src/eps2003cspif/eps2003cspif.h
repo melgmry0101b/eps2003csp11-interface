@@ -43,4 +43,9 @@
 // ====== Exported Methods ======
 // ==============================
 
+// ------------------------------------------------------
+// Initialize the library for operations.
+// ------------------------------------------------------
+DLLENTRY(HRESULT) Initialize();
+
 #endif //EPS2003CSPIF_H

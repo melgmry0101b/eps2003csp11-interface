@@ -15,6 +15,21 @@
 #define EPS2003CSPIF_ERRCODES_H
 
 // Base error code for the application
-#define EPSIF_BASE_ERROR_CODE 0x200
+#define _EPSIF_BASE_ERROR_CODE 0x200
+
+// =========================
+// ====== Error Codes ======
+// =========================
+
+#define _EPSIF_ECODE_INIT_FAILED (_EPSIF_BASE_ERROR_CODE + 0x001)
+
+// =====================
+// ====== HRESULT ======
+// =====================
+
+//
+// Initialization failed
+//
+#define EPSIF_E_INIT_FAILED MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, _EPSIF_ECODE_INIT_FAILED)
 
 #endif
