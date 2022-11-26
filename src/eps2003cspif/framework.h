@@ -18,6 +18,10 @@
 // ====== C++ Standard Library Headers ======
 // ==========================================
 
+#include <memory>
+#include <cassert>
+#include <cwchar>
+
 // =================================
 // ====== Windows API Headers ======
 // =================================
@@ -26,6 +30,7 @@
 
 #include <windows.h>
 #include <crtdbg.h>
+#include <OleAuto.h>
 
 // =====================
 // ====== PKCS#11 ======

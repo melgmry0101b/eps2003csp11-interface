@@ -44,13 +44,13 @@
 // ==============================
 
 // ------------------------------------------------------
-// Initialize the library for operations.
+// Open the library for the first slot with a token.
 // ------------------------------------------------------
-DLLENTRY(HRESULT) Initialize();
+DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin);
 
 // ------------------------------------------------------
 // Close the library.
 // ------------------------------------------------------
-DLLENTRY(HRESULT) Finalize();
+DLLENTRY(HRESULT) CloseKiLibrary();
 
 #endif //EPS2003CSPIF_H
