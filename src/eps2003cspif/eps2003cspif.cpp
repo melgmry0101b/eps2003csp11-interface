@@ -33,7 +33,8 @@ HRESULT Finalize();
 HRESULT GetFirstSlotId(CK_SLOT_ID &firstSlotId);
 HRESULT OpenSessionForSlot(CK_SLOT_ID slotId, CK_SESSION_HANDLE &hOpenedSession);
 HRESULT SessionLogin(CK_SESSION_HANDLE hSession, CK_CHAR_PTR pPin, CK_ULONG ulPinLen);
-HRESULT CheckAnyCertificatePresent(CK_SESSION_HANDLE hSession);
+HRESULT CheckAnyCertificateExistsInSlot(CK_SESSION_HANDLE hSession);
+HRESULT GetCertificateFromMyStore(BSTR pwszCertName, BYTE *&pbCert, DWORD &cbCert);
 
 // ==============================
 // ====== Exported Methods ======
@@ -78,7 +79,7 @@ DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin)
     if (FAILED(hr)) { goto error; }
 
     // === Check if a certificate is present in the token ===
-    hr = CheckAnyCertificatePresent(g_hSession);
+    hr = CheckAnyCertificateExistsInSlot(g_hSession);
     if (FAILED(hr)) { goto error; }
 
     // Open Library Succeeded
@@ -100,6 +101,33 @@ DLLENTRY(HRESULT) CloseKiLibrary()
     if (!g_IsInitialized) { return S_OK; }
 
     return Finalize();
+}
+
+// ------------------------------------------------------
+// 
+// Sign with CAdES-BES using the provided root cert.
+// 
+// ------------------------------------------------------
+DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert)
+{
+    if (!g_IsInitialized) { return EPSIF_E_NOT_INITIALIZED; }
+
+    HRESULT hr{ S_OK };
+
+    BYTE *pbRootCert{ nullptr };
+    DWORD cbRootCert{ 0 };
+
+    // === Get the root certificate from the store ===
+    hr = GetCertificateFromMyStore(pwszRootCert, pbRootCert, cbRootCert);
+    if (FAILED(hr)) { goto done; }
+
+done:
+    if (pbRootCert)
+    {
+        delete[] pbRootCert;
+    }
+
+    return hr;
 }
 
 // =============================
@@ -245,10 +273,10 @@ HRESULT SessionLogin(CK_SESSION_HANDLE hSession, CK_CHAR_PTR pPin, CK_ULONG ulPi
 
 // ------------------------------------------------------
 //
-// Check if a certificate is present.
+// Check if any certificate exists in slot.
 // 
 // ------------------------------------------------------
-HRESULT CheckAnyCertificatePresent(CK_SESSION_HANDLE hSession)
+HRESULT CheckAnyCertificateExistsInSlot(CK_SESSION_HANDLE hSession)
 {
     assert(g_IsInitialized == true);
 
@@ -293,4 +321,69 @@ HRESULT CheckAnyCertificatePresent(CK_SESSION_HANDLE hSession)
 
     // We got a certificate
     return S_OK;
+}
+
+// ------------------------------------------------------
+//
+// Get a certificate from the "My" system store.
+// 
+// ------------------------------------------------------
+HRESULT GetCertificateFromMyStore(BSTR pwszCertName, BYTE *&pbCert, DWORD &cbCert)
+{
+    assert(g_IsInitialized == true);
+
+    HRESULT hr{ S_OK };
+
+    HCERTSTORE hMySysStore{ nullptr };
+    PCCERT_CONTEXT pCert{ nullptr };
+
+    BYTE *pbCertBuffer{ nullptr };
+
+    // === Open the "My" system store ===
+    hMySysStore = CertOpenSystemStore(NULL, L"MY");
+    if (!hMySysStore)
+    {
+        hr = HRESULT_FROM_WIN32(GetLastError());
+        goto done;
+    }
+
+    // === Find the certificate in the store ===
+    pCert = CertFindCertificateInStore(hMySysStore, X509_ASN_ENCODING, 0, CERT_FIND_ISSUER_STR, pwszCertName, nullptr);
+    if (!pCert)
+    {
+        hr = HRESULT_FROM_WIN32(GetLastError());
+        goto done;
+    }
+
+    // === Copy the cert to a buffer and return it to the caller ===
+    pbCertBuffer = new(std::nothrow) BYTE[pCert->cbCertEncoded];
+    if (!pbCertBuffer)
+    {
+        hr = E_OUTOFMEMORY;
+        goto done;
+    }
+
+    std::memcpy(pbCertBuffer, pCert->pbCertEncoded, pCert->cbCertEncoded);
+
+    // === Set the out params ===
+    pbCert = pbCertBuffer;
+    cbCert = pCert->cbCertEncoded;
+
+done:
+    if (pCert)
+    {
+        CertFreeCertificateContext(pCert);
+    }
+
+    if (hMySysStore)
+    {
+        CertCloseStore(hMySysStore, 0);
+    }
+
+    if (FAILED(hr) && pbCertBuffer)
+    {
+        delete[] pbCertBuffer;
+    }
+
+    return hr;
 }

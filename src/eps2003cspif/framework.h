@@ -31,6 +31,7 @@
 #include <windows.h>
 #include <crtdbg.h>
 #include <OleAuto.h>
+#include <wincrypt.h>
 
 // =====================
 // ====== PKCS#11 ======
