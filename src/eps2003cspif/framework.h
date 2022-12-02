@@ -39,5 +39,13 @@
 
 #include <pkcs11/v2.20/cryptoki.h>
 
+// =====================================
+// ====== ESSSigningCertificateV2 ======
+// =====================================
+
+#define ASSUMESTDTYPES
+#include <SigningCertificateV2.h>
+#undef ASSUMESTDTYPES
+
 #endif //EPS2003CSPIF_FRAMEWORK_H
 

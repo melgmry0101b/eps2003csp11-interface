@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AdministrationDomainName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmIdentifier.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ANY.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="asn_codecs_prim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="asn_SEQUENCE_OF.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="asn_SET_OF.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttributeType.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttributeTypeAndValue.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttributeValue.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ber_decoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ber_tlv_length.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ber_tlv_tag.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BIT_STRING.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BMPString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BuiltInDomainDefinedAttribute.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BuiltInDomainDefinedAttributes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BuiltInStandardAttributes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CertificateSerialNumber.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CertPolicyId.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="constr_CHOICE.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="constr_SEQUENCE.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="constr_SEQUENCE_OF.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="constr_SET.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="constr_SET_OF.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="constr_TYPE.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="constraints.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CountryName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="der_encoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectoryString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EDIPartyName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ESSCertIDv2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtensionAttribute.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtensionAttributes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralNames.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IA5String.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="INTEGER.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IssuerSerial.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Name.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeEnumerated.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeInteger.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkAddress.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NumericString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NumericUserIdentifier.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJECT_IDENTIFIER.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OCTET_STRING.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ORAddress.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrganizationalUnitName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrganizationalUnitNames.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrganizationName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OtherName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="per_decoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="per_encoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="per_opentype.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="per_support.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PersonalName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PolicyInformation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PolicyQualifierId.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PolicyQualifierInfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintableString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PrivateDomainName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RDNSequence.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RelativeDistinguishedName.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SigningCertificateV2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TeletexString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TerminalIdentifier.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniversalString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UTF8String.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="X121Address.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xer_decoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xer_encoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xer_support.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
