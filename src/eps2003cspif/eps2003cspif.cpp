@@ -34,7 +34,7 @@ HRESULT GetFirstSlotId(CK_SLOT_ID &firstSlotId);
 HRESULT OpenSessionForSlot(CK_SLOT_ID slotId, CK_SESSION_HANDLE &hOpenedSession);
 HRESULT SessionLogin(CK_SESSION_HANDLE hSession, CK_CHAR_PTR pPin, CK_ULONG ulPinLen);
 HRESULT CheckAnyCertificateExistsInSlot(CK_SESSION_HANDLE hSession);
-HRESULT GetCertificateFromMyStore(BSTR pwszCertName, BYTE *&pbCert, DWORD &cbCert);
+HRESULT GetCertificateFromMyStore(BSTR pwszCertificateName, PCCERT_CONTEXT &pCertificate);
 
 // ==============================
 // ====== Exported Methods ======
@@ -108,23 +108,22 @@ DLLENTRY(HRESULT) CloseKiLibrary()
 // Sign with CAdES-BES using the provided root cert.
 // 
 // ------------------------------------------------------
-DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert)
+DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwszSignature)
 {
     if (!g_IsInitialized) { return EPSIF_E_NOT_INITIALIZED; }
 
     HRESULT hr{ S_OK };
 
-    BYTE *pbRootCert{ nullptr };
-    DWORD cbRootCert{ 0 };
+    PCCERT_CONTEXT pRootCert{ nullptr };
 
     // === Get the root certificate from the store ===
-    hr = GetCertificateFromMyStore(pwszRootCert, pbRootCert, cbRootCert);
+    hr = GetCertificateFromMyStore(pwszRootCert, pRootCert);
     if (FAILED(hr)) { goto done; }
 
 done:
-    if (pbRootCert)
+    if (pRootCert)
     {
-        delete[] pbRootCert;
+        CertFreeCertificateContext(pRootCert);
     }
 
     return hr;
@@ -328,7 +327,7 @@ HRESULT CheckAnyCertificateExistsInSlot(CK_SESSION_HANDLE hSession)
 // Get a certificate from the "My" system store.
 // 
 // ------------------------------------------------------
-HRESULT GetCertificateFromMyStore(BSTR pwszCertName, BYTE *&pbCert, DWORD &cbCert)
+HRESULT GetCertificateFromMyStore(BSTR pwszCertificateName, PCCERT_CONTEXT &pCertificate)
 {
     assert(g_IsInitialized == true);
 
@@ -336,8 +335,6 @@ HRESULT GetCertificateFromMyStore(BSTR pwszCertName, BYTE *&pbCert, DWORD &cbCer
 
     HCERTSTORE hMySysStore{ nullptr };
     PCCERT_CONTEXT pCert{ nullptr };
-
-    BYTE *pbCertBuffer{ nullptr };
 
     // === Open the "My" system store ===
     hMySysStore = CertOpenSystemStore(NULL, L"MY");
@@ -348,29 +345,17 @@ HRESULT GetCertificateFromMyStore(BSTR pwszCertName, BYTE *&pbCert, DWORD &cbCer
     }
 
     // === Find the certificate in the store ===
-    pCert = CertFindCertificateInStore(hMySysStore, X509_ASN_ENCODING, 0, CERT_FIND_ISSUER_STR, pwszCertName, nullptr);
+    pCert = CertFindCertificateInStore(hMySysStore, X509_ASN_ENCODING, 0, CERT_FIND_ISSUER_STR, pwszCertificateName, nullptr);
     if (!pCert)
     {
         hr = HRESULT_FROM_WIN32(GetLastError());
         goto done;
     }
 
-    // === Copy the cert to a buffer and return it to the caller ===
-    pbCertBuffer = new(std::nothrow) BYTE[pCert->cbCertEncoded];
-    if (!pbCertBuffer)
-    {
-        hr = E_OUTOFMEMORY;
-        goto done;
-    }
-
-    std::memcpy(pbCertBuffer, pCert->pbCertEncoded, pCert->cbCertEncoded);
-
-    // === Set the out params ===
-    pbCert = pbCertBuffer;
-    cbCert = pCert->cbCertEncoded;
+    pCertificate = pCert;
 
 done:
-    if (pCert)
+    if (FAILED(hr) && pCert)
     {
         CertFreeCertificateContext(pCert);
     }
@@ -378,11 +363,6 @@ done:
     if (hMySysStore)
     {
         CertCloseStore(hMySysStore, 0);
-    }
-
-    if (FAILED(hr) && pbCertBuffer)
-    {
-        delete[] pbCertBuffer;
     }
 
     return hr;

@@ -53,4 +53,9 @@ DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin);
 // ------------------------------------------------------
 DLLENTRY(HRESULT) CloseKiLibrary();
 
+// ------------------------------------------------------
+// Sign with CAdES-BES using the provided root cert.
+// ------------------------------------------------------
+DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwszSignature);
+
 #endif //EPS2003CSPIF_H
