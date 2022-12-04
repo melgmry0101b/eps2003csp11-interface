@@ -154,7 +154,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -176,7 +176,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -198,7 +198,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -220,7 +220,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

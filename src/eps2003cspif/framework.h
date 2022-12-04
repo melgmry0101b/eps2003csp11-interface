@@ -32,6 +32,7 @@
 #include <crtdbg.h>
 #include <OleAuto.h>
 #include <wincrypt.h>
+#include <bcrypt.h>
 
 // =====================
 // ====== PKCS#11 ======

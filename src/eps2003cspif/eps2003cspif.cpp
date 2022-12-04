@@ -42,6 +42,19 @@ HRESULT GetCertificateFromMyStore(BSTR pwszCertificateName, PCCERT_CONTEXT &pCer
 
 // ------------------------------------------------------
 // 
+// This function is used as an interface for other
+//  language to free memory allocated by the library.
+// 
+// ------------------------------------------------------
+DLLENTRY(void) FreeMem(void *p)
+{
+    // All our allocations in the library is of arrays of
+    //  simple types using new[], so we free using delete[].
+    delete[] p;
+}
+
+// ------------------------------------------------------
+// 
 // Open the library for the first slot with a token.
 // 
 // ------------------------------------------------------
@@ -114,13 +127,45 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
 
     HRESULT hr{ S_OK };
 
+    char    *mbData{ nullptr };
+    size_t  cchData{ 0 };
+
     PCCERT_CONTEXT pRootCert{ nullptr };
+
+    // === Prepare data to be bytes ===
+    // Get required size
+    if (wcstombs_s(&cchData, nullptr, 0, pwszData, 0) != ERROR_SUCCESS)
+    {
+        hr = E_UNEXPECTED;
+        goto done;
+    }
+
+    // Allocate buffer and convert
+    mbData = new(std::nothrow) char[cchData + 1]; // Add 1 for appended null -safety-
+    if (!mbData)
+    {
+        hr = E_OUTOFMEMORY;
+        goto done;
+    }
+
+    if (wcstombs_s(&cchData, mbData, cchData, pwszData, cchData) != ERROR_SUCCESS)
+    {
+        hr = E_UNEXPECTED;
+        goto done;
+    }
 
     // === Get the root certificate from the store ===
     hr = GetCertificateFromMyStore(pwszRootCert, pRootCert);
     if (FAILED(hr)) { goto done; }
 
+
+
 done:
+    if (mbData)
+    {
+        delete[] mbData;
+    }
+
     if (pRootCert)
     {
         CertFreeCertificateContext(pRootCert);
@@ -366,4 +411,9 @@ done:
     }
 
     return hr;
+}
+
+DLLENTRY(void) tst()
+{
+    return;
 }

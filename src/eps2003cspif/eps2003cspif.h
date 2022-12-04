@@ -44,6 +44,12 @@
 // ==============================
 
 // ------------------------------------------------------
+// This function is used as an interface for other
+//  language to free memory allocated by the library.
+// ------------------------------------------------------
+DLLENTRY(void) FreeMem(void *p);
+
+// ------------------------------------------------------
 // Open the library for the first slot with a token.
 // ------------------------------------------------------
 DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin);
@@ -57,5 +63,23 @@ DLLENTRY(HRESULT) CloseKiLibrary();
 // Sign with CAdES-BES using the provided root cert.
 // ------------------------------------------------------
 DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwszSignature);
+
+// ------------------------------------------------------
+// Create SHA256 Hash.
+// 
+// Free buffer returned in `ppbHash` using FreeMem
+//  from this library.
+// ------------------------------------------------------
+DLLENTRY(HRESULT) SHA256(BYTE *pbData, DWORD cbData, BYTE **ppbHash, DWORD *pcbHash);
+
+// ------------------------------------------------------
+// Create SHA256 Hash and set the output as BSTR.
+// ------------------------------------------------------
+DLLENTRY(HRESULT) SHA256_STR(BYTE *pbData, DWORD cbData, BSTR *ppwszHash);
+
+// ------------------------------------------------------
+// Create base64 string and set the output as BSTR.
+// ------------------------------------------------------
+DLLENTRY(HRESULT) BASE64(BYTE *pbData, DWORD cbData, BSTR *ppwszBase64);
 
 #endif //EPS2003CSPIF_H
