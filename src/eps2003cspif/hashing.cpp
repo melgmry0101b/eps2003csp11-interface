@@ -57,7 +57,7 @@ DLLENTRY(HRESULT) SHA256(BYTE *pbData, DWORD cbData, BYTE **ppbHash, DWORD *pcbH
     status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, nullptr, 0);
     if (!NT_SUCCESS(status))
     {
-        _RPT1(_CRT_WARN, "BCryptOpenAlgorithmProvider failed with NTSTATUS 0x%x", status);
+        _RPT1(_CRT_WARN, "BCryptOpenAlgorithmProvider failed with NTSTATUS 0x%x\n", status);
         hr = HRESULT_FROM_NT(status);
         goto done;
     }
@@ -66,7 +66,7 @@ DLLENTRY(HRESULT) SHA256(BYTE *pbData, DWORD cbData, BYTE **ppbHash, DWORD *pcbH
     status = BCryptCreateHash(hAlg, &hHash, nullptr, 0, nullptr, 0, 0);
     if (!NT_SUCCESS(status))
     {
-        _RPT1(_CRT_WARN, "BCryptCreateHash failed with NTSTATUS 0x%x", status);
+        _RPT1(_CRT_WARN, "BCryptCreateHash failed with NTSTATUS 0x%x\n", status);
         hr = HRESULT_FROM_NT(status);
         goto done;
     }
@@ -75,7 +75,7 @@ DLLENTRY(HRESULT) SHA256(BYTE *pbData, DWORD cbData, BYTE **ppbHash, DWORD *pcbH
     status = BCryptHashData(hHash, pbData, cbData, 0);
     if (!NT_SUCCESS(status))
     {
-        _RPT1(_CRT_WARN, "BCryptHashData failed with NTSATUS 0x%x", status);
+        _RPT1(_CRT_WARN, "BCryptHashData failed with NTSATUS 0x%x\n", status);
         hr = HRESULT_FROM_NT(status);
         goto done;
     }
@@ -84,7 +84,7 @@ DLLENTRY(HRESULT) SHA256(BYTE *pbData, DWORD cbData, BYTE **ppbHash, DWORD *pcbH
     status = BCryptFinishHash(hHash, pbHash, SHA256_SIZE, 0);
     if (!NT_SUCCESS(status))
     {
-        _RPT1(_CRT_WARN, "BCryptFinishHash failed with NTSATUS 0x%x", status);
+        _RPT1(_CRT_WARN, "BCryptFinishHash failed with NTSATUS 0x%x\n", status);
         hr = HRESULT_FROM_NT(status);
         goto done;
     }
