@@ -183,7 +183,7 @@ HRESULT CreateCadesBesSignedMessage(BYTE *pbContent, DWORD cbContent, PCCERT_CON
     msgSigners[0].hCryptProv                = hPrivateKey;
     msgSigners[0].dwKeySpec                 = dwPrivateKeySpec;
     msgSigners[0].HashAlgorithm.pszObjId    = const_cast<LPSTR>(szOID_NIST_sha256);
-    msgSigners[0].cAuthAttr                 = sizeof(messageAttributes);
+    msgSigners[0].cAuthAttr                 = 2;
     msgSigners[0].rgAuthAttr                = messageAttributes;
 
     // ======
@@ -191,9 +191,9 @@ HRESULT CreateCadesBesSignedMessage(BYTE *pbContent, DWORD cbContent, PCCERT_CON
     // ======
 
     msgInfo.cbSize          = sizeof(CMSG_SIGNED_ENCODE_INFO);
-    msgInfo.cSigners        = sizeof(msgSigners);
+    msgInfo.cSigners        = 1;
     msgInfo.rgSigners       = msgSigners;
-    msgInfo.cCertEncoded    = sizeof(certsEncoded);
+    msgInfo.cCertEncoded    = 1;
     msgInfo.rgCertEncoded   = certsEncoded;
 
     // ======
