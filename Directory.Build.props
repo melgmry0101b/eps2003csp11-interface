@@ -39,6 +39,14 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
+  <!-- Output paths parents -->
+  <PropertyGroup>
+    <!-- Root represents the parent path for all output,
+      and Main is a sub directory that has the distributable output -not demos or tests for example- -->
+    <OutDirRoot>$(MSBuildThisFileDirectory)$(CustomOutputFolderName)</OutDirRoot>
+    <OutDirMain>$(OutDirRoot)$(Configuration)\$(ProjectRootName)\$(Platform)\</OutDirMain>
+  </PropertyGroup>
+
   <!-- Build paths -->
   <PropertyGroup>
     <!-- IntDir is the property for the C/C++ projects -->
@@ -46,14 +54,14 @@
     <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
     <!-- anything not in 'src' is considered helper #NOTE: not best practice! to have code outside 'src' imho -->
     <!-- OutDir is the property for the C/C++ projects -->
-    <OutDir>$(MSBuildThisFileDirectory)$(CustomOutputFolderName)$(Configuration)\Helpers\$(MSBuildProjectName)\$(Platform)\</OutDir>
+    <OutDir>$(OutDirRoot)$(Configuration)\Helpers\$(MSBuildProjectName)\$(Platform)\</OutDir>
     <OutputPath>$(OutDir)</OutputPath>
   </PropertyGroup>
 
   <!-- Consolidate all main executables in one output -->
   <PropertyGroup Condition="$(MSBuildProjectDirectory.Contains('src'))">
     <!-- OutDir is the property for the C/C++ projects -->
-    <OutDir>$(MSBuildThisFileDirectory)$(CustomOutputFolderName)$(Configuration)\$(ProjectRootName)\$(Platform)\</OutDir>
+    <OutDir>$(OutDirMain)</OutDir>
     <OutputPath>$(OutDir)</OutputPath>
   </PropertyGroup>
 
