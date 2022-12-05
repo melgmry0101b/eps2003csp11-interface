@@ -21,6 +21,7 @@
 #include <memory>
 #include <cassert>
 #include <cwchar>
+#include <vector>
 
 // =================================
 // ====== Windows API Headers ======
@@ -33,6 +34,7 @@
 #include <OleAuto.h>
 #include <wincrypt.h>
 #include <bcrypt.h>
+#include <ncrypt.h>
 
 // =====================
 // ====== PKCS#11 ======

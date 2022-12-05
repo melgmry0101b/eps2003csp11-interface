@@ -14,6 +14,7 @@
 #include "pch.h"
 
 #include "eps2003cspif.h"
+#include "cmssign.h"
 
 #define MAX_BUFFER 255
 
@@ -123,7 +124,10 @@ DLLENTRY(HRESULT) CloseKiLibrary()
 // ------------------------------------------------------
 DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwszSignature)
 {
-    if (!g_IsInitialized) { return EPSIF_E_NOT_INITIALIZED; }
+    // NOTE: Here a decision has been made to detach this method from
+    //  being tied to the CryptoKi library, as it can be used without
+    //  the ePass2003 PKI token.
+    // if (!g_IsInitialized) { return EPSIF_E_NOT_INITIALIZED; }
 
     HRESULT hr{ S_OK };
 
@@ -131,6 +135,11 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
     size_t  cchData{ 0 };
 
     PCCERT_CONTEXT pRootCert{ nullptr };
+
+    BYTE    *pbEncodedMessage{ nullptr };
+    DWORD   cbEncodedMessage{ 0 };
+
+    BSTR pwszSignature{ nullptr };
 
     // === Prepare data to be bytes ===
     // Get required size
@@ -141,14 +150,14 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
     }
 
     // Allocate buffer and convert
-    mbData = new(std::nothrow) char[cchData + 1]; // Add 1 for appended null -safety-
+    mbData = new(std::nothrow) char[cchData + 1]; // Add 1 for appended null
     if (!mbData)
     {
         hr = E_OUTOFMEMORY;
         goto done;
     }
 
-    if (wcstombs_s(&cchData, mbData, cchData, pwszData, cchData) != ERROR_SUCCESS)
+    if (wcstombs_s(&cchData, mbData, cchData + 1, pwszData, cchData) != ERROR_SUCCESS)
     {
         hr = E_UNEXPECTED;
         goto done;
@@ -158,7 +167,21 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
     hr = GetCertificateFromMyStore(pwszRootCert, pRootCert);
     if (FAILED(hr)) { goto done; }
 
+    // === Create the encoded CAdES-BES message
+    hr = CreateCadesBesSignedMessage(
+        reinterpret_cast<BYTE *>(mbData),
+        static_cast<DWORD>(cchData),
+        pRootCert,
+        &pbEncodedMessage,
+        &cbEncodedMessage);
+    if (FAILED(hr)) { goto done; }
 
+    // === Create Bas64
+    hr = BASE64(pbEncodedMessage, cbEncodedMessage, &pwszSignature);
+    if (FAILED(hr)) { goto done; }
+
+    // === Set output
+    (*ppwszSignature) = pwszSignature;
 
 done:
     if (mbData)
@@ -169,6 +192,11 @@ done:
     if (pRootCert)
     {
         CertFreeCertificateContext(pRootCert);
+    }
+
+    if (pbEncodedMessage)
+    {
+        delete[] pbEncodedMessage;
     }
 
     return hr;
@@ -374,7 +402,10 @@ HRESULT CheckAnyCertificateExistsInSlot(CK_SESSION_HANDLE hSession)
 // ------------------------------------------------------
 HRESULT GetCertificateFromMyStore(BSTR pwszCertificateName, PCCERT_CONTEXT &pCertificate)
 {
-    assert(g_IsInitialized == true);
+    // NOTE: Here a decision has been made to detach this method from
+    //  being tied to the CryptoKi library, as it can be used without
+    //  the ePass2003 PKI token.
+    // assert(g_IsInitialized == true);
 
     HRESULT hr{ S_OK };
 

@@ -36,6 +36,7 @@
 #define _EPSIF_ECODE_LOGIN_FAILED           (_EPSIF_BASE_ERROR_CODE + 0x006)
 #define _EPSIF_ECODE_CANNOT_FIND_OBJECTS    (_EPSIF_BASE_ERROR_CODE + 0x007)
 #define _EPSIF_ECODE_NO_CERTIFICATES        (_EPSIF_BASE_ERROR_CODE + 0x008)
+#define _EPSIF_ECODE_ENCODING_FAILED        (_EPSIF_BASE_ERROR_CODE + 0x009)
 
 // =====================
 // ====== HRESULT ======
@@ -85,5 +86,10 @@
 // No certificates found
 //
 #define EPSIF_E_NO_CERTIFICATES         MAKE_ITF_ERROR_HRESULT(_EPSIF_ECODE_NO_CERTIFICATES);
+
+//
+// Encoding operation failed
+//
+#define EPSIF_E_ENCODING_FAILED         MAKE_ITF_ERROR_HRESULT(_EPSIF_ECODE_ENCODING_FAILED);
 
 #endif
