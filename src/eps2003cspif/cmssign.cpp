@@ -153,8 +153,9 @@ HRESULT CreateCadesBesSignedMessage(BYTE *pbContent, DWORD cbContent, PCCERT_CON
         [](const void *buffer, size_t size, void *app_key)
         {
             std::vector<BYTE> *dest = static_cast<std::vector<BYTE> *>(app_key);
-            dest->resize(size);
-            std::memcpy(dest->data(), buffer, size);
+            auto currentVectorSize = dest->size();
+            dest->resize(currentVectorSize + size);
+            std::memcpy(dest->data() + currentVectorSize, buffer, size);
             return 0;
         },
         &vecEncodedSigningCert);
