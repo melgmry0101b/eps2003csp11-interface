@@ -178,7 +178,7 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
     // === Create the encoded CAdES-BES message
     hr = CreateCadesBesSignedMessage(
         reinterpret_cast<BYTE *>(mbData),
-        static_cast<DWORD>(cchData),
+        static_cast<DWORD>(cchData - 1), // Omitting the null terminator
         pRootCert,
         &pbEncodedMessage,
         &cbEncodedMessage);
