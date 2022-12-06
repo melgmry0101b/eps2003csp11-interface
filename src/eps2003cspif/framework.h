@@ -35,6 +35,7 @@
 #include <wincrypt.h>
 #include <bcrypt.h>
 #include <ncrypt.h>
+#include <locale.h>
 
 // =====================
 // ====== PKCS#11 ======

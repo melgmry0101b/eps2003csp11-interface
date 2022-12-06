@@ -70,11 +70,17 @@ DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin)
     size_t pinLen{ 0 };
     char mbPin[MAX_BUFFER]{ '\0' };
 
+    // create a locale to accept utf8 pins
+    _locale_t utf8_locale = _create_locale(LC_ALL, ".utf8");
+
     // === Convert Passed Strings ===
-    if (wcstombs_s(&pinLen, mbPin, MAX_BUFFER, pwszPin, MAX_BUFFER - 1) != ERROR_SUCCESS)
+    if (_wcstombs_s_l(&pinLen, mbPin, MAX_BUFFER, pwszPin, MAX_BUFFER - 1, utf8_locale) != ERROR_SUCCESS)
     {
+        _free_locale(utf8_locale);
         return E_UNEXPECTED;
     }
+
+    _free_locale(utf8_locale);
 
     // === Initialize Library ===
     hr = Initialize();
@@ -141,9 +147,11 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
 
     BSTR pwszSignature{ nullptr };
 
+    _locale_t utf8_locale = _create_locale(LC_ALL, ".utf8");
+
     // === Prepare data to be bytes ===
     // Get required size
-    if (wcstombs_s(&cchData, nullptr, 0, pwszData, 0) != ERROR_SUCCESS)
+    if (_wcstombs_s_l(&cchData, nullptr, 0, pwszData, 0, utf8_locale) != ERROR_SUCCESS)
     {
         hr = E_UNEXPECTED;
         goto done;
@@ -157,7 +165,7 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
         goto done;
     }
 
-    if (wcstombs_s(&cchData, mbData, cchData + 1, pwszData, cchData) != ERROR_SUCCESS)
+    if (_wcstombs_s_l(&cchData, mbData, cchData + 1, pwszData, cchData, utf8_locale) != ERROR_SUCCESS)
     {
         hr = E_UNEXPECTED;
         goto done;
@@ -184,6 +192,8 @@ DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwsz
     (*ppwszSignature) = pwszSignature;
 
 done:
+    _free_locale(utf8_locale);
+
     if (mbData)
     {
         delete[] mbData;
