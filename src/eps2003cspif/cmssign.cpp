@@ -203,7 +203,7 @@ HRESULT CreateCadesBesSignedMessage(BYTE *pbContent, DWORD cbContent, PCCERT_CON
 
     cbEncodedBlob = CryptMsgCalculateEncodedLength(
         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-        CMSG_DETACHED_FLAG,
+        CMSG_DETACHED_FLAG | CMSG_CMS_ENCAPSULATED_CONTENT_FLAG,
         CMSG_SIGNED,
         &msgInfo,
         const_cast<LPSTR>(szOID_RSA_digestedData),
@@ -232,7 +232,7 @@ HRESULT CreateCadesBesSignedMessage(BYTE *pbContent, DWORD cbContent, PCCERT_CON
 
     hMsg = CryptMsgOpenToEncode(
         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-        CMSG_DETACHED_FLAG,
+        CMSG_DETACHED_FLAG | CMSG_CMS_ENCAPSULATED_CONTENT_FLAG,
         CMSG_SIGNED,
         &msgInfo,
         const_cast<LPSTR>(szOID_RSA_digestedData),
