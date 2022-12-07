@@ -14,7 +14,7 @@ int main()
     //  on your system.
 
     // The library uses BSTR for interoperability with languages that use COM,
-    //  but you can pass WCHAR*, as the library doesn't use .
+    //  but you can pass WCHAR*, as the library doesn't use specific BSTR methods.
 
     HRESULT hr{ S_OK };
 
