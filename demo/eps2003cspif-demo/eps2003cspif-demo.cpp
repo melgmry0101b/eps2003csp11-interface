@@ -22,14 +22,14 @@ int main()
 
     // The issuer of the certificate you are using for signing.
     // NOTE: You should have the private key of the certificate registered on your system.
-    BSTR pwszCertificateIssue = SysAllocString(L"<YouCertificateNameGoesHere>");
+    BSTR pwszCertificateIssuer = SysAllocString(L"<YouCertificateNameGoesHere>");
 
     // The library currently signs text, although nothing prevents the base logic from
     //  signing any blobs, but, this is for another feature consideration :)
     BSTR pwszData = SysAllocString(L"Data to be signed.");
 
     // Now, sign!
-    hr = SignWithCadesBes(pwszCertificateIssue, pwszData, &pwszOutput);
+    hr = SignWithCadesBes(pwszCertificateIssuer, pwszData, &pwszOutput);
     if (SUCCEEDED(hr))
     {
         std::wcout << pwszOutput << std::endl;
@@ -39,7 +39,7 @@ int main()
         std::printf("Error occurred during signing. HRESULT 0x%x\n", hr);
     }
 
-    SysFreeString(pwszCertificateIssue);
+    SysFreeString(pwszCertificateIssuer);
     SysFreeString(pwszData);
     if (pwszOutput) { SysFreeString(pwszOutput); }
 
