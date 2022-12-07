@@ -92,6 +92,9 @@
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -119,6 +122,9 @@
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -142,6 +148,9 @@
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -169,6 +178,9 @@
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cmssign.h" />

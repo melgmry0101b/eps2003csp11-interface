@@ -10,6 +10,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "eps2003cspif", "src\eps2003
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ESSSigningCertificateV2", "src\ESSSigningCertificateV2\ESSSigningCertificateV2.vcxproj", "{97CCAA0E-E22D-4C9D-AE0D-6AC2412F4306}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "eps2003cspif-demo", "demo\eps2003cspif-demo\eps2003cspif-demo.vcxproj", "{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FEAA9D38-42CE-4C1F-B628-BDA1736FFBE2} = {FEAA9D38-42CE-4C1F-B628-BDA1736FFBE2}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +39,14 @@ Global
 		{97CCAA0E-E22D-4C9D-AE0D-6AC2412F4306}.Release|x64.Build.0 = Release|x64
 		{97CCAA0E-E22D-4C9D-AE0D-6AC2412F4306}.Release|x86.ActiveCfg = Release|Win32
 		{97CCAA0E-E22D-4C9D-AE0D-6AC2412F4306}.Release|x86.Build.0 = Release|Win32
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Debug|x64.ActiveCfg = Debug|x64
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Debug|x64.Build.0 = Debug|x64
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Debug|x86.ActiveCfg = Debug|Win32
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Debug|x86.Build.0 = Debug|Win32
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Release|x64.ActiveCfg = Release|x64
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Release|x64.Build.0 = Release|x64
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Release|x86.ActiveCfg = Release|Win32
+		{86F82A67-3E0E-4EB0-B11C-77AE3BB2CB6C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
