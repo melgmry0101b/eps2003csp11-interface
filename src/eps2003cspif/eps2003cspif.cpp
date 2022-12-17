@@ -453,8 +453,3 @@ done:
 
     return hr;
 }
-
-DLLENTRY(void) tst()
-{
-    return;
-}
