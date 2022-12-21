@@ -95,7 +95,7 @@ DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin)
     if (FAILED(hr)) { goto error; }
 
     // === Login into session ===
-    hr = SessionLogin(g_hSession, reinterpret_cast<CK_CHAR_PTR>(mbPin), static_cast<CK_ULONG>(pinLen));
+    hr = SessionLogin(g_hSession, reinterpret_cast<CK_CHAR_PTR>(mbPin), static_cast<CK_ULONG>(pinLen - 1)); // Ignore '\0'
     if (FAILED(hr)) { goto error; }
 
     // === Check if a certificate is present in the token ===
