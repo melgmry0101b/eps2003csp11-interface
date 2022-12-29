@@ -17,7 +17,7 @@
   <!-- Include preprocessor definitions for the product version targeting C/C++ -->
   <Import Project="$(MSBuildThisFileDirectory)config\msbuild\VersionInfoPreprocessorDefinitions.props" />
 
-  <!-- Set default configuration -->
+  <!-- Set default configurations -->
   <PropertyGroup Condition=" '$(Configuration)' == '' ">
     <!-- Assume 'Release' if no configuration is specified  -->
     <Configuration>Release</Configuration>
@@ -27,66 +27,51 @@
     <DefineDebug>true</DefineDebug>
   </PropertyGroup>
 
-  <!-- Set default platform -->
-  <PropertyGroup Condition=" '$(Platform)' == '' ">
-    <Platform>x64</Platform>
-  </PropertyGroup>
-
   <PropertyGroup>
     <CustomIntermediateFolderName>__intermediates__\</CustomIntermediateFolderName>
     <CustomOutputFolderName>__output__\</CustomOutputFolderName>
-    <CustomPublishFolderName>
-      dist\</CustomPublishFolderName>
+    <CustomPublishFolderName>dist\</CustomPublishFolderName>
   </PropertyGroup>
 
   <PropertyGroup>
     <!-- Output path schema -->
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <AppendRuntimeIdentifierToOutputPath>
-      false</AppendRuntimeIdentifierToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
   <!-- Output paths parents -->
   <PropertyGroup>
     <!-- Root represents the parent path for all output,
       and Main is a sub directory that has the distributable output -not demos or tests for example- -->
-    <OutDirRoot>
-      $(MSBuildThisFileDirectory)$(CustomOutputFolderName)</OutDirRoot>
-    <OutDirMain>
-      $(OutDirRoot)$(Configuration)\$(ProjectRootName)\$(Platform)\</OutDirMain>
+    <OutDirRoot>$(MSBuildThisFileDirectory)$(CustomOutputFolderName)</OutDirRoot>
+    <OutDirMain>$(OutDirRoot)$(Configuration)\$(ProjectRootName)\$(Platform)\</OutDirMain>
   </PropertyGroup>
 
   <!-- Build paths -->
   <PropertyGroup>
     <!-- IntDir is the property for the C/C++ projects -->
-    <IntDir>
-      $(MSBuildThisFileDirectory)$(CustomIntermediateFolderName)$(MSBuildProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <BaseIntermediateOutputPath>
-      $(IntDir)</BaseIntermediateOutputPath>
+    <IntDir>$(MSBuildThisFileDirectory)$(CustomIntermediateFolderName)$(MSBuildProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
     <!-- anything not in 'src' is considered helper #NOTE: not best practice! to have code outside 'src' imho -->
     <!-- OutDir is the property for the C/C++ projects -->
-    <OutDir>
-      $(OutDirRoot)$(Configuration)\Helpers\$(MSBuildProjectName)\$(Platform)\</OutDir>
+    <OutDir>$(OutDirRoot)$(Configuration)\Helpers\$(MSBuildProjectName)\$(Platform)\</OutDir>
     <OutputPath>$(OutDir)</OutputPath>
   </PropertyGroup>
 
   <!-- Consolidate all main executables in one output -->
   <PropertyGroup Condition="$(MSBuildProjectDirectory.Contains('src'))">
     <!-- OutDir is the property for the C/C++ projects -->
-    <OutDir>
-      $(OutDirMain)</OutDir>
+    <OutDir>$(OutDirMain)</OutDir>
     <OutputPath>$(OutDir)</OutputPath>
   </PropertyGroup>
 
   <!-- Publish path, set IsPublishable to false to exclude project from being published -->
   <PropertyGroup>
-    <PublishDir>
-      $(MSBuildThisFileDirectory)$(CustomPublishFolderName)$(Version)\$(Configuration)\$(ProjectRootName)\$(Platform)\</PublishDir>
+    <PublishDir>$(MSBuildThisFileDirectory)$(CustomPublishFolderName)$(Version)\$(Configuration)\$(ProjectRootName)\$(Platform)\</PublishDir>
   </PropertyGroup>
 
   <!-- For code file names and pdb -->
   <PropertyGroup>
-    <PathMap>
-      $(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+    <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
   </PropertyGroup>
 </Project>
