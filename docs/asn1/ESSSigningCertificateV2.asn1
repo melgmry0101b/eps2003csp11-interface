@@ -1,0 +1,232 @@
+--- -----------------------------------------------------------------
+---
+--- ESSSigningCertificateV2.asn1
+---     eps2003csp11-interface
+---
+--- MIT - see LICENSE at root directory
+---
+--- CREATED: 2022-11-24 06:12 PM
+--- AUTHORS: Mohammed Elghamry <elghamry.connect[at]outlook[dot]com>
+---
+--- -----------------------------------------------------------------
+
+--- NOTE ------------------------------------------------------------
+--- This ASN.1 modules is written to conform with the guidance on
+---     the eSignature of Egypt's EInvoicing system. The signature
+---     is to be sent aligned with CAdES-BES. This modules isn't
+---     comperhensive of the whole CAdES-BES Modules, but is used
+---     to fill the missing gaps in Windows CryptoAPI.
+---
+--- Egypt's eSignature Document:
+--- https://www.eta.gov.eg/sites/default/files/2021-09/Digital%20Signature%20Format%20V1.1_final_0.pdf
+---
+--- This file uses portions provided by "Michael Chourdakis"
+---     under MIT License:
+--- https://github.com/WindowsNT/AdES/blob/master/cades.asn1
+---
+--- This file is to be compiled using asn1c to generate C Code:
+--- https://github.com/vlm/asn1c
+--- Command Line: asn1c -pdu=SigningCertificateV2 ESSSigningCertificateV2.asn1
+---
+--- -----------------------------------------------------------------
+
+ESSSigningCertificateV2Module DEFINITIONS ::= BEGIN
+
+---
+--- Final Required Items
+---
+
+--- `SigningCertificateV2` is our PDU
+SigningCertificateV2 ::= SEQUENCE {
+    certs SEQUENCE OF ESSCertIDv2,
+    policies SEQUENCE OF PolicyInformation OPTIONAL
+}
+
+ESSCertIDv2 ::= SEQUENCE {
+    hashAlgorithm AlgorithmIdentifier DEFAULT {algorithm id-sha256},
+    certHash Hash,
+    issuerSerial IssuerSerial OPTIONAL
+}
+
+---
+--- Definitions
+---
+
+id-sha256 OBJECT IDENTIFIER ::= {
+joint-iso-itu-t(2) country(16) us(840) organization(1) gov(101)
+csor(3) nistalgorithm(4) hashalgs(2) 1 }
+
+Hash ::= OCTET STRING
+
+AlgorithmIdentifier ::= SEQUENCE {
+  algorithm OBJECT IDENTIFIER,
+  parameters ANY DEFINED BY algorithm OPTIONAL
+}
+
+PolicyInformation ::= SEQUENCE {
+    policyIdentifier   CertPolicyId,
+    policyQualifiers   SEQUENCE SIZE (1..MAX) OF PolicyQualifierInfo OPTIONAL
+}
+
+CertPolicyId ::= OBJECT IDENTIFIER
+
+PolicyQualifierInfo ::= SEQUENCE {
+    policyQualifierId  PolicyQualifierId,
+    qualifier          ANY DEFINED BY policyQualifierId
+}
+
+PolicyQualifierId ::= OBJECT IDENTIFIER ( id-qt-cps | id-qt-unotice )
+
+--- Note: if you are using an extension that highlights ASN.1, it may complain about `id-pkix`,
+---     don't worry, it will be resolved automatically if you are using asn1c.
+id-qt          OBJECT IDENTIFIER ::=  { id-pkix 2 }
+id-qt-cps      OBJECT IDENTIFIER ::=  { id-qt 1 }
+id-qt-unotice  OBJECT IDENTIFIER ::=  { id-qt 2 }
+
+IssuerSerial ::= SEQUENCE {
+    issuer GeneralNames,
+    serialNumber CertificateSerialNumber
+}
+
+CertificateSerialNumber ::= INTEGER
+
+GeneralNames ::= SEQUENCE SIZE (1..MAX) OF GeneralName
+
+GeneralName ::= CHOICE {
+    otherName                       [0]     OtherName,
+    rfc822Name                      [1]     IA5String,
+    dNSName                         [2]     IA5String,
+    x400Address                     [3]     ORAddress,
+    directoryName                   [4]     Name,
+    ediPartyName                    [5]     EDIPartyName,
+    uniformResourceIdentifier       [6]     IA5String,
+    iPAddress                       [7]     OCTET STRING,
+    registeredID                    [8]     OBJECT IDENTIFIER
+}
+
+OtherName ::= SEQUENCE {
+    type-id    OBJECT IDENTIFIER,
+    value      [0] EXPLICIT ANY DEFINED BY type-id
+}
+
+ORAddress ::= SEQUENCE {
+    built-in-standard-attributes BuiltInStandardAttributes,
+    built-in-domain-defined-attributes BuiltInDomainDefinedAttributes OPTIONAL,
+    extension-attributes ExtensionAttributes OPTIONAL
+}
+
+BuiltInStandardAttributes ::= SEQUENCE {
+    country-name                  CountryName OPTIONAL,
+    administration-domain-name    AdministrationDomainName OPTIONAL,
+    network-address           [0] IMPLICIT NetworkAddress OPTIONAL,
+    terminal-identifier       [1] IMPLICIT TerminalIdentifier OPTIONAL,
+    private-domain-name       [2] PrivateDomainName OPTIONAL,
+    organization-name         [3] IMPLICIT OrganizationName OPTIONAL,
+    numeric-user-identifier   [4] IMPLICIT NumericUserIdentifier OPTIONAL,
+    personal-name             [5] IMPLICIT PersonalName OPTIONAL,
+    organizational-unit-names [6] IMPLICIT OrganizationalUnitNames OPTIONAL
+}
+
+CountryName ::= [APPLICATION 1] CHOICE {
+    x121-dcc-code         NumericString (SIZE (ub-country-name-numeric-length)),
+    iso-3166-alpha2-code  PrintableString (SIZE (ub-country-name-alpha-length))
+}
+
+AdministrationDomainName ::= [APPLICATION 2] CHOICE {
+    numeric   NumericString   (SIZE (0..ub-domain-name-length)),
+    printable PrintableString (SIZE (0..ub-domain-name-length))
+}
+
+NetworkAddress ::= X121Address
+
+X121Address ::= NumericString (SIZE (1..ub-x121-address-length))
+
+TerminalIdentifier ::= PrintableString (SIZE (1..ub-terminal-id-length))
+
+PrivateDomainName ::= CHOICE {
+   numeric   NumericString   (SIZE (1..ub-domain-name-length)),
+   printable PrintableString (SIZE (1..ub-domain-name-length))
+}
+
+OrganizationName ::= PrintableString (SIZE (1..ub-organization-name-length))
+
+NumericUserIdentifier ::= NumericString (SIZE (1..ub-numeric-user-id-length))
+
+PersonalName ::= SET {
+    surname                 [0] IMPLICIT PrintableString (SIZE (1..ub-surname-length)),
+    given-name              [1] IMPLICIT PrintableString (SIZE (1..ub-given-name-length)) OPTIONAL,
+    initials                [2] IMPLICIT PrintableString (SIZE (1..ub-initials-length)) OPTIONAL,
+    generation-qualifier    [3] IMPLICIT PrintableString (SIZE (1..ub-generation-qualifier-length)) OPTIONAL
+}
+
+OrganizationalUnitNames ::= SEQUENCE SIZE (1..ub-organizational-units) OF OrganizationalUnitName
+
+OrganizationalUnitName ::= PrintableString (SIZE (1..ub-organizational-unit-name-length))
+
+BuiltInDomainDefinedAttributes ::= SEQUENCE SIZE (1..ub-domain-defined-attributes) OF BuiltInDomainDefinedAttribute
+
+BuiltInDomainDefinedAttribute ::= SEQUENCE {
+    type PrintableString (SIZE (1..ub-domain-defined-attribute-type-length)),
+    value PrintableString (SIZE (1..ub-domain-defined-attribute-value-length))
+}
+
+ExtensionAttributes ::= SET SIZE (1..ub-extension-attributes) OF ExtensionAttribute
+
+ExtensionAttribute ::= SEQUENCE {
+extension-attribute-type    [0] IMPLICIT INTEGER (0..ub-extension-attributes),
+extension-attribute-value   [1] ANY DEFINED BY extension-attribute-type
+}
+
+Name ::= CHOICE { -- only one possibility for now --
+    rdnSequence  RDNSequence
+}
+
+RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
+
+RelativeDistinguishedName ::= SET SIZE (1 .. MAX) OF AttributeTypeAndValue
+
+AttributeTypeAndValue ::= SEQUENCE {
+    type     AttributeType,
+    value    AttributeValue
+ }
+
+AttributeType ::= OBJECT IDENTIFIER
+
+AttributeValue ::= ANY
+
+EDIPartyName ::= SEQUENCE {
+    nameAssigner            [0]     DirectoryString OPTIONAL,
+    partyName               [1]     DirectoryString
+}
+
+DirectoryString ::= CHOICE {
+    teletexString           TeletexString (SIZE (1..MAX)),
+    printableString         PrintableString (SIZE (1..MAX)),
+    universalString         UniversalString (SIZE (1..MAX)),
+    utf8String              UTF8String (SIZE (1..MAX)),
+    bmpString               BMPString (SIZE (1..MAX))
+}
+
+---
+--- Upper Bounds
+---
+
+ub-country-name-alpha-length INTEGER ::= 2
+ub-country-name-numeric-length INTEGER ::= 3
+ub-domain-defined-attributes INTEGER ::= 4
+ub-domain-defined-attribute-type-length INTEGER ::= 8
+ub-domain-defined-attribute-value-length INTEGER ::= 128
+ub-domain-name-length INTEGER ::= 16
+ub-extension-attributes INTEGER ::= 256
+ub-generation-qualifier-length INTEGER ::= 3
+ub-given-name-length INTEGER ::= 16
+ub-initials-length INTEGER ::= 5
+ub-numeric-user-id-length INTEGER ::= 32
+ub-organization-name-length INTEGER ::= 64
+ub-organizational-unit-name-length INTEGER ::= 32
+ub-organizational-units INTEGER ::= 4
+ub-surname-length INTEGER ::= 40
+ub-terminal-id-length INTEGER ::= 24
+ub-x121-address-length INTEGER ::= 16
+
+END
