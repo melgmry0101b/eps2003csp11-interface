@@ -28,11 +28,11 @@
   <!-- Version Information -->
   <PropertyGroup>
     <!-- ====== Only Change after this line ====== -->
-    <VersionMajor>0</VersionMajor>
-    <VersionMinor>1</VersionMinor>
+    <VersionMajor>1</VersionMajor>
+    <VersionMinor>0</VersionMinor>
     <VersionPatch>0</VersionPatch>
     <!-- Always add '-' (dash) before VersionPrerelease for semantic versioning -->
-    <VersionPrerelease>-alpha.dev</VersionPrerelease>
+    <VersionPrerelease></VersionPrerelease>
     <!-- ====== Only change before this line ====== -->
 
     <VersionDate>$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</VersionDate>
