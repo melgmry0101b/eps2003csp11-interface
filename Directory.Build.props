@@ -17,7 +17,7 @@
   <!-- Include preprocessor definitions for the product version targeting C/C++ -->
   <Import Project="$(MSBuildThisFileDirectory)config\msbuild\VersionInfoPreprocessorDefinitions.props" />
 
-  <!-- Set default configurations -->
+  <!-- Set default configuration -->
   <PropertyGroup Condition=" '$(Configuration)' == '' ">
     <!-- Assume 'Release' if no configuration is specified  -->
     <Configuration>Release</Configuration>
@@ -25,6 +25,11 @@
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineDebug>true</DefineDebug>
+  </PropertyGroup>
+
+  <!-- Set default platform -->
+  <PropertyGroup Condition=" '$(Platform)' == '' ">
+    <Platform>x64</Platform>
   </PropertyGroup>
 
   <PropertyGroup>

@@ -30,7 +30,7 @@
     <!-- ====== Only Change after this line ====== -->
     <VersionMajor>1</VersionMajor>
     <VersionMinor>0</VersionMinor>
-    <VersionPatch>0</VersionPatch>
+    <VersionPatch>2</VersionPatch>
     <!-- Always add '-' (dash) before VersionPrerelease for semantic versioning -->
     <VersionPrerelease></VersionPrerelease>
     <!-- ====== Only change before this line ====== -->
@@ -41,7 +41,7 @@
     <FileVersionMinuteOfDay>$([System.Convert]::ToInt32($([System.DateTime]::UtcNow.TimeOfDay.TotalMinutes)))</FileVersionMinuteOfDay>
 
     <Version>$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionPrerelease)</Version>
-    <InformationalVersion>$(Version)+$(Configuration).$(VersionDate)</InformationalVersion>
+    <InformationalVersion>$(Version)+$(Configuration).$(Platform).$(VersionDate)</InformationalVersion>
     <SourceRevisionId>ManualBuild</SourceRevisionId>
 
     <!-- File version is an identifier that is used to be showed in the FileExplorer,
