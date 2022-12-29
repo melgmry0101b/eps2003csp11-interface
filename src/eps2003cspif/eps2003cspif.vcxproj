@@ -93,7 +93,7 @@
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+      <Command>mkdir "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" &amp; xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,7 +123,7 @@
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+      <Command>mkdir "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" &amp; xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -149,7 +149,7 @@
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+      <Command>mkdir "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" &amp; xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -179,7 +179,7 @@
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
+      <Command>mkdir "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" &amp; xcopy "$(OutDirMain)eps2003cspif.dll" "$(OutDirRoot)$(Configuration)\Helpers\eps2003cspif-demo\$(Platform)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
