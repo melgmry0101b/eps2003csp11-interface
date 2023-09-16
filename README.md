@@ -1,7 +1,10 @@
 eps2003csp11-interface
 ======================
 
-A lightweight library that interfaces EnterPass's ePass2003 PKCS#11 library `eps2003csp11.dll`, with the added functionality of supporting CAdES-BES signing natively.
+A lightweight library that interfaces PKCS#11 libraries, with the added functionality of supporting CAdES-BES signing natively.
+
+The library was originally built for `eps2003csp11.dll`, hence the name, but the functionality has been expanded adding the ability
+to dynamically load different PKCS#11 modules.
 
 What is this All About?
 -----------------------
@@ -10,10 +13,13 @@ Recently we were working on integrating the new eTax system in Egypt. Part of th
 
 This library provides the functionality needed to open the PKI token, and sign with CAdES-BES natively without the overhead of BouncyCastle for example.
 
+**Recently, with version 2.0.0, the library has been expanded to be able to dynamically load different PKCS#11 modules
+dynamically**.
+
 What are the Limitations of this Library?
 ----------------------------------------
 
-This library is developed natively for Windows platforms which renders it non-portable to other platforms as Macs or Linux. The library also is linked against `eps2003csp11.dll` specifically which doesn't allow it to be used for tokens that uses other software interfaces. Finally, the library is developed to interact with the first token available to the system without the ability to select specific token. These limitations are mitigable, but needs some work, feel free to open an [issue](https://github.com/melgmry0101b/eps2003csp11-interface/issues/new) if you reached these limitations, or help us by opening a [pull request](https://github.com/melgmry0101b/eps2003csp11-interface/compare).
+This library is developed natively for Windows platforms which renders it non-portable to other platforms as Macs or Linux. The library is developed to interact with the first token available to the system without the ability to select specific token. These limitations are mitigable, but needs some work, feel free to open an [issue](https://github.com/melgmry0101b/eps2003csp11-interface/issues/new) if you reached these limitations, or help us by opening a [pull request](https://github.com/melgmry0101b/eps2003csp11-interface/compare).
 
 How to Use?
 -----------
@@ -23,10 +29,10 @@ If you are linking this library to a project that takes header files, add [eps20
 ### Functions
 
 ```CPP
-DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin)
+DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszLibName, BSTR pwszPin)
 ```
 
-Opens the first token available to the system with the provided PIN.
+Opens the first token available to the system with the provided PIN, and using the provided PKCS#11 module.
 
 ```CPP
 DLLENTRY(HRESULT) SignWithCadesBes(BSTR pwszRootCert, BSTR pwszData, BSTR *ppwszSignature)

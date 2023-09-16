@@ -52,7 +52,7 @@ DLLENTRY(void) FreeMem(void *p);
 // ------------------------------------------------------
 // Open the library for the first slot with a token.
 // ------------------------------------------------------
-DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin);
+DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszLibName, BSTR pwszPin);
 
 // ------------------------------------------------------
 // Close the library.

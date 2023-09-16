@@ -24,6 +24,8 @@
 
 static bool g_IsInitialized{ false };
 static CK_SESSION_HANDLE g_hSession{ 0 };
+static HMODULE g_hPkcsLibrary{ nullptr };
+static CK_FUNCTION_LIST_PTR g_pPkcsLibFunctionList{ nullptr };
 
 // ==========================
 // ====== Declarations ======
@@ -59,11 +61,13 @@ DLLENTRY(void) FreeMem(void *p)
 // Open the library for the first slot with a token.
 // 
 // ------------------------------------------------------
-DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin)
+DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszLibName, BSTR pwszPin)
 {
     if (g_IsInitialized) { return S_OK; }
 
     HRESULT hr{ S_OK };
+
+    CK_C_GetFunctionList pGetFunctionList{ nullptr };
 
     CK_SLOT_ID ulFirstSlotId{ 0 };
 
@@ -81,6 +85,29 @@ DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin)
     }
 
     _free_locale(utf8_locale);
+
+    // === Open PKCS#11 Library ===
+    g_hPkcsLibrary = LoadLibrary(pwszLibName);
+    if (!g_hPkcsLibrary)
+    {
+        hr = HRESULT_FROM_WIN32(GetLastError());
+        goto error;
+    }
+
+    // === Get the address of `C_GetFunctionList` proc ===
+    pGetFunctionList = reinterpret_cast<CK_C_GetFunctionList>(GetProcAddress(g_hPkcsLibrary, "C_GetFunctionList"));
+    if (!pGetFunctionList)
+    {
+        hr = HRESULT_FROM_WIN32(GetLastError());
+        goto error;
+    }
+
+    // === And get the functions list ===
+    if (pGetFunctionList(&g_pPkcsLibFunctionList) != CKR_OK)
+    {
+        hr = EPSIF_E_INIT_FAILED;
+        goto error;
+    }
 
     // === Initialize Library ===
     hr = Initialize();
@@ -107,6 +134,10 @@ DLLENTRY(HRESULT) OpenKiLibrary(BSTR pwszPin)
 
 error:
     if (g_IsInitialized) { Finalize(); }
+    if (g_hPkcsLibrary) { FreeLibrary(g_hPkcsLibrary); }
+
+    g_hPkcsLibrary = nullptr;
+    g_pPkcsLibFunctionList = nullptr;
 
     return hr;
 }
@@ -118,9 +149,13 @@ error:
 // ------------------------------------------------------
 DLLENTRY(HRESULT) CloseKiLibrary()
 {
-    if (!g_IsInitialized) { return S_OK; }
+    if (g_IsInitialized) { Finalize(); }
+    if (g_hPkcsLibrary) { FreeLibrary(g_hPkcsLibrary); }
 
-    return Finalize();
+    g_hPkcsLibrary = nullptr;
+    g_pPkcsLibFunctionList = nullptr;
+
+    return S_OK;
 }
 
 // ------------------------------------------------------
@@ -228,7 +263,7 @@ HRESULT Initialize()
     CK_RV result{ CKR_OK };
 
     // Send initialization command to the library
-    result = C_Initialize(nullptr);
+    result = g_pPkcsLibFunctionList->C_Initialize(nullptr);
     if (result != CKR_OK && result != CKR_CRYPTOKI_ALREADY_INITIALIZED)
     {
         _RPT1(_CRT_WARN, "Error occurred during initialization. Code 0x%x\n", result);
@@ -252,10 +287,10 @@ HRESULT Finalize()
     CK_RV result{ CKR_OK };
 
     // Close session ignoring any errors
-    C_CloseSession(g_hSession);
+    g_pPkcsLibFunctionList->C_CloseSession(g_hSession);
 
     // Send finalization command to the library
-    result = C_Finalize(nullptr);
+    result = g_pPkcsLibFunctionList->C_Finalize(nullptr);
     if (result != CKR_OK && result != CKR_CRYPTOKI_NOT_INITIALIZED)
     {
         _RPT1(_CRT_WARN, "Error occurred during finalization. Code 0x%x\n", result);
@@ -281,7 +316,7 @@ HRESULT GetFirstSlotId(CK_SLOT_ID &firstSlotId)
     CK_ULONG ulSlotsCount{ 0 };
     std::unique_ptr<CK_SLOT_ID> slotList{ nullptr };
 
-    result = C_GetSlotList(true, nullptr, &ulSlotsCount);
+    result = g_pPkcsLibFunctionList->C_GetSlotList(true, nullptr, &ulSlotsCount);
     if (result != CKR_OK)
     {
         _RPT1(_CRT_WARN, "Error occurred during obtaining slots count. Code 0x%x\n", result);
@@ -295,7 +330,7 @@ HRESULT GetFirstSlotId(CK_SLOT_ID &firstSlotId)
     }
 
     slotList = std::make_unique<CK_SLOT_ID>(ulSlotsCount);
-    result = C_GetSlotList(true, slotList.get(), &ulSlotsCount);
+    result = g_pPkcsLibFunctionList->C_GetSlotList(true, slotList.get(), &ulSlotsCount);
     if (result != CKR_OK)
     {
         _RPT1(_CRT_WARN, "Error occurred during obtaining slots. Code 0x%x\n", result);
@@ -320,7 +355,7 @@ HRESULT OpenSessionForSlot(CK_SLOT_ID slotId, CK_SESSION_HANDLE &hOpenedSession)
     CK_SESSION_HANDLE hSession{ 0 };
     
     // NOTE: CKF_SERIAL_SESSION has always to be set for legacy reasons.
-    result = C_OpenSession(slotId, CKF_SERIAL_SESSION | CKF_RW_SESSION, nullptr, nullptr, &hSession);
+    result = g_pPkcsLibFunctionList->C_OpenSession(slotId, CKF_SERIAL_SESSION | CKF_RW_SESSION, nullptr, nullptr, &hSession);
     if (result != CKR_OK)
     {
         _RPT1(_CRT_WARN, "Error occurred during opening session. Code 0x%x\n", result);
@@ -343,7 +378,7 @@ HRESULT SessionLogin(CK_SESSION_HANDLE hSession, CK_CHAR_PTR pPin, CK_ULONG ulPi
 
     CK_RV result{ CKR_OK };
 
-    result = C_Login(hSession, CKU_USER, pPin, ulPinLen);
+    result = g_pPkcsLibFunctionList->C_Login(hSession, CKU_USER, pPin, ulPinLen);
     if (result != CKR_OK)
     {
         _RPT1(_CRT_WARN, "Error occurred during login. Code 0x%x\n", result);
@@ -377,21 +412,21 @@ HRESULT CheckAnyCertificateExistsInSlot(CK_SESSION_HANDLE hSession)
         { CKA_CERTIFICATE_TYPE, &certType,  sizeof(certType)    }
     };
 
-    result = C_FindObjectsInit(hSession, attrTemplate, 3);
+    result = g_pPkcsLibFunctionList->C_FindObjectsInit(hSession, attrTemplate, 3);
     if (result != CKR_OK)
     {
         _RPT1(_CRT_WARN, "Error occurred during C_FindObjectsInit. Code 0x%x\n", result);
         return EPSIF_E_CANNOT_FIND_OBJECTS;
     }
 
-    result = C_FindObjects(hSession, &obj, 1, &ulObjCount);
+    result = g_pPkcsLibFunctionList->C_FindObjects(hSession, &obj, 1, &ulObjCount);
     if (result != CKR_OK)
     {
         _RPT1(_CRT_WARN, "Error occurred during C_FindObjects. Code 0x%x\n", result);
         return EPSIF_E_CANNOT_FIND_OBJECTS;
     }
 
-    result = C_FindObjectsFinal(hSession);
+    result = g_pPkcsLibFunctionList->C_FindObjectsFinal(hSession);
     if (result != CKR_OK)
     {
         _RPT1(_CRT_WARN, "Error occurred during C_FindObjectsFinal. Code 0x%x\n", result);

@@ -87,7 +87,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)lib\eps2003csp11x86.lib;$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -117,7 +117,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)lib\eps2003csp11x86.lib;$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -143,7 +143,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)lib\eps2003csp11x64.lib;$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -173,7 +173,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>$(SolutionDir)lib\eps2003csp11x64.lib;$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)ESSSigningCertificateV2.lib;Crypt32.lib;Bcrypt.lib;Ncrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions>$(BinaryVersionPreprocessorDefinitions);$(VersionPreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
